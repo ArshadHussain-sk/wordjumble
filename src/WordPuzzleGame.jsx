@@ -29,7 +29,13 @@ export default function WordPuzzleGame() {
   const click = useRef(new Audio(clickSound)).current;
   const correct = useRef(new Audio(correctSound)).current;
   const wrong = useRef(new Audio(wrongSound)).current;
-
+  const getShuffledWord = (word) => {
+  let shuffled = shuffleArray(word.split(""));
+  while (shuffled.join("") === word) {
+    shuffled = shuffleArray(word.split(""));
+  }
+  return shuffled;
+  };
   const shuffleArray = (arr) => arr.slice().sort(() => Math.random() - 0.5);
 
   // Pick random word from level words
@@ -44,7 +50,7 @@ export default function WordPuzzleGame() {
   useEffect(() => {
     const word = pickRandomWord();
     setPuzzleWord(word);
-    setShuffled(shuffleArray(word.split("")));
+    setShuffled(getShuffledWord(word));
     setUserGuess([]);
     setStartTime(Date.now());
     setHintsUsedCount(usedHints[level]?.count || 0);
@@ -65,7 +71,25 @@ export default function WordPuzzleGame() {
     localStorage.setItem("heartRegenSeconds", heartRegenSeconds);
     if (lastHeartUsedAtRef.current) localStorage.setItem("lastHeartUsedAt", lastHeartUsedAtRef.current);
   }, [level, coins, hearts, usedHints, heartRegenSeconds]);
+  
+  useEffect(() => {
+  const wordList = wordLevels[level];
+  const word = wordList ? wordList[Math.floor(Math.random() * wordList.length)] : "ERROR";
+  setPuzzleWord(word);
+  setShuffled(getShuffledWord(word)); // This ensures it's always jumbled
+  setUserGuess([]);
+  setStartTime(Date.now());
+  setHintsUsedCount((usedHints[level] && usedHints[level].count) || 0);
+  setFadeIn(true);
 
+  if (word.length > 3) {
+    const randIndex = Math.floor(Math.random() * (word.length - 2)) + 1;
+    setRandomHintIndex(randIndex);
+  } else {
+    setRandomHintIndex(1);
+  }
+  }, [level]);
+ 
   // Heart regeneration timer
   useEffect(() => {
     if (hearts >= MAX_HEARTS) {
