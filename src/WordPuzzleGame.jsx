@@ -36,6 +36,7 @@ export default function WordPuzzleGame() {
   const pickRandomWord = () => {
     const words = wordLevels[level] || ["error"];
     const randomIndex = Math.floor(Math.random() * words.length);
+    
     return words[randomIndex];
   };
 
@@ -119,32 +120,40 @@ export default function WordPuzzleGame() {
 
   // Check answer with random new word on fail
   const checkAnswer = () => {
-    if (userGuess.join("") === puzzleWord) {
-      correct.play();
-      const finish = Date.now();
-      const time = Math.floor((finish - startTime) / 1000);
-      if (!topTime || time < topTime) {
-        setTopTime(time);
-        localStorage.setItem("topTime", time);
-      }
-      setCoins(coins + 100);
-      setLevel(level + 1);
-    } else {
-      wrong.play();
-      if (hearts <= 1) {
-        setHearts(0);
-        lastHeartUsedAtRef.current = Date.now();
-      } else {
-        setHearts(hearts - 1);
-        lastHeartUsedAtRef.current = Date.now();
-      }
-      // Pick new random word from current level on fail
-      const newWord = pickRandomWord();
-      setPuzzleWord(newWord);
-      setShuffled(shuffleArray(newWord.split("")));
-      setUserGuess([]);
+  // 🔔 Show alert if user has not selected full word
+  if (userGuess.length < puzzleWord.length) {
+    alert(`❗ You selected only ${userGuess.length} letters. Please select all ${puzzleWord.length} letters before submitting.`);
+    return;
+  }
+
+  if (userGuess.join("") === puzzleWord) {
+    correct.play();
+    const finish = Date.now();
+    const time = Math.floor((finish - startTime) / 1000);
+    if (!topTime || time < topTime) {
+      setTopTime(time);
+      localStorage.setItem("topTime", time);
     }
-  };
+    setCoins(coins + 100);
+    setLevel(level + 1);
+  } else {
+    wrong.play();
+    if (hearts <= 1) {
+      setHearts(0);
+      lastHeartUsedAtRef.current = Date.now();
+    } else {
+      setHearts(hearts - 1);
+      lastHeartUsedAtRef.current = Date.now();
+    }
+
+    // Pick new random word from current level on fail
+    const newWord = pickRandomWord();
+    setPuzzleWord(newWord);
+    setShuffled(shuffleArray(newWord.split("")));
+    setUserGuess([]);
+  }
+};
+
 
   // Buy heart
   const buyHeart = () => {
@@ -201,6 +210,7 @@ export default function WordPuzzleGame() {
     <div className="popup-box">
       <h2>🚧 Site Under Development</h2>
       <p>This game is currently in development. Some features may change or be unstable.</p>
+      <p>~shaik arshad hussain</p>
       <button onClick={() => setShowPopup(false)} className="popup-button">Okay, Continue</button>
     </div>
   </div>

@@ -8,4 +8,13 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <WordPuzzleGame />
   </React.StrictMode>
 );
+<div id="incomplete-popup" className="popup-backdrop">
+  <div className="popup-box">
+    <h2>Incomplete Selection</h2>
+    <p>Please select all letters before submitting.</p>
+    <button onClick={() => document.getElementById("incomplete-popup").style.display = "none"}>
+      OK
+    </button>
+  </div>
+</div>
 
