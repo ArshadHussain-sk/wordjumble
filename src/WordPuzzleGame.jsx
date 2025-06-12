@@ -178,7 +178,7 @@ export default function WordPuzzleGame() {
 
   return (
     <div className={`game-container ${fadeIn ? "fade-in" : ""}`}>
-      <h1 className="game-title">🔤 Word Puzzle</h1>
+      <h1 className="game-title">🔤 Word Jumble</h1>
 
       <div className="info-bar">
         <span>Level {level + 1}</span>
