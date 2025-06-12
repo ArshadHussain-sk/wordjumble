@@ -112,6 +112,59 @@ body, html, #root {
   cursor: default;
 }
 
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup-box {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  text-align: center;
+  color: black;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  width: 80%;
+  max-width: 400px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  animation: popFadeIn 0.4s ease-in-out;
+}
+
+.popup-button {
+  background-color: #4CAF50;
+  color: rgb(0, 0, 0);
+  padding: 0.7rem 1.5rem;
+  font-size: 1rem;
+  border: none;
+  margin-top: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.popup-button:hover {
+  background-color: #388e3c;
+}
+
+@keyframes popFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 /* Shuffled Letters Buttons */
 .shuffled-letters {
   display: flex;

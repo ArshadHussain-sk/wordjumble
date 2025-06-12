@@ -23,6 +23,7 @@ export default function WordPuzzleGame() {
   const lastHeartUsedAtRef = useRef(Number(localStorage.getItem("lastHeartUsedAt")) || null);
   const [randomHintIndex, setRandomHintIndex] = useState(null);
   const [fadeIn, setFadeIn] = useState(true);
+  const [showPopup, setShowPopup] = useState(true); // modal control
 
   // Sounds
   const click = useRef(new Audio(clickSound)).current;
@@ -193,6 +194,19 @@ export default function WordPuzzleGame() {
           <span key={i} className="guess-letter">{l}</span>
         ))}
       </div>
+      
+
+      {showPopup && (
+  <div className="popup-overlay">
+    <div className="popup-box">
+      <h2>🚧 Site Under Development</h2>
+      <p>This game is currently in development. Some features may change or be unstable.</p>
+      <button onClick={() => setShowPopup(false)} className="popup-button">Okay, Continue</button>
+    </div>
+  </div>
+  )}
+
+
 
       <div className="shuffled-letters">
         {shuffled.map((l, i) => (
