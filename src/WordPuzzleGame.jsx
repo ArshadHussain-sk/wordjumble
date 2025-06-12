@@ -31,14 +31,21 @@ export default function WordPuzzleGame() {
   const wrong = useRef(new Audio(wrongSound)).current;
   const getShuffledWord = (word) => {
   let shuffled = shuffleArray(word.split(""));
-  while (shuffled.join("") === word) {
+
+  // Keep reshuffling if:
+  // - It matches original
+  // - OR more than 2 letters are in original positions
+  while (
+    shuffled.join("") === word ||
+    shuffled.filter((ch, i) => ch === word[i]).length > 2
+  ) {
     shuffled = shuffleArray(word.split(""));
   }
+
   return shuffled;
   };
   const shuffleArray = (arr) => arr.slice().sort(() => Math.random() - 0.5);
 
-  // Pick random word from level words
   const pickRandomWord = () => {
     const words = wordLevels[level] || ["error"];
     const randomIndex = Math.floor(Math.random() * words.length);
@@ -71,7 +78,12 @@ export default function WordPuzzleGame() {
     localStorage.setItem("heartRegenSeconds", heartRegenSeconds);
     if (lastHeartUsedAtRef.current) localStorage.setItem("lastHeartUsedAt", lastHeartUsedAtRef.current);
   }, [level, coins, hearts, usedHints, heartRegenSeconds]);
-  
+
+  useEffect(() => {
+  const timeout = setTimeout(() => setFadeIn(false), 1000); // remove fade-in after 1 second
+  return () => clearTimeout(timeout);
+  }, []);
+
   useEffect(() => {
   const wordList = wordLevels[level];
   const word = wordList ? wordList[Math.floor(Math.random() * wordList.length)] : "ERROR";
@@ -239,7 +251,8 @@ export default function WordPuzzleGame() {
     </div>
   </div>
   )}
-
+  
+  
 
 
       <div className="shuffled-letters">

@@ -16,6 +16,15 @@ body, html, #root {
   color: #fff;
 }
 
+/* Prevent mobile white highlight when selecting letters */
+@media (hover: none) {
+  .letter-button {
+    background: none !important;
+    box-shadow: none !important;
+    transition: none !important;
+  }
+}
+
 /* Container */
 .game-container {
   background: linear-gradient(145deg, #2f54eb, #4361ee);
